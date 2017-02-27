@@ -10,7 +10,7 @@ use App\Petition;
 
 class PetitionCRUDController extends Controller
 {
-
+    // list and sort all petitions that exist in DB
     public function index(Request $request)
     {
         $petitions = Petition::orderBy('id','DESC')->paginate(5);
@@ -18,13 +18,13 @@ class PetitionCRUDController extends Controller
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
 
- 
+    // return a 'create' view w/ input forms
     public function create()
     {
         return view('PetitionCRUD.create');
     }
 
-
+    // take in request, and write the petition to the DB
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -33,8 +33,6 @@ class PetitionCRUDController extends Controller
         ]);
 
         $params = $request->all();
-        //$params['user_id'] = Auth::id();
-
         $petition = new Petition($params);
         $petition->user()->associate(Auth::user());
         $petition->save();
@@ -43,18 +41,21 @@ class PetitionCRUDController extends Controller
                         ->with('success','Petition created successfully');
     }
 
+    // list all petitions in the DB
     public function show($id)
     {
         $petition = Petition::find($id);
         return view('PetitionCRUD.show',compact('petition'));
     }
 
+    // return view to edit an existing petition
     public function edit($id)
     {
         $petition = Petition::find($id);
         return view('PetitionCRUD.edit',compact('petition'));
     }
 
+    // update & store changes to an existing petition in the DB
     public function update(Request $request, $id)
     {
         $this->validate($request, [
@@ -67,6 +68,7 @@ class PetitionCRUDController extends Controller
                         ->with('success','Petition updated successfully');
     }
 
+    // delete a petition / record from the DB
     public function destroy($id)
     {
         Petition::find($id)->delete();

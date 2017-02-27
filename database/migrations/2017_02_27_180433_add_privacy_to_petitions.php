@@ -10,7 +10,7 @@ class AddPrivacyToPetitions extends Migration
     public function up()
     {
         Schema::table('petitions', function (Blueprint $table) {
-            // adds a column to represent Private vs. Public petitions
+            // TO-DO : adds a column to represent Private vs. Public petitions. Default petition value is 'Public'
             $table->boolean('private')->default(0);
         });
     }
