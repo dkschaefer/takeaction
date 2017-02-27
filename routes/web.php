@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('petitionCRUD.index');
 });
 
 Route::resource('petitionCRUD','PetitionCRUDController');
